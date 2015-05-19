@@ -17,7 +17,7 @@
     	// will fade out the whole DIV that covers the website. 
     	$("#preloader").delay(500).fadeOut("slow").remove();  
 
-  	}) 
+  	}); 
 
   	/*----------------------------------------------------*/
   	/* Backstretch
@@ -79,7 +79,7 @@
                         title: "Menu",
                         href : "#" } 
                         );
-  	var nav_wrap = $('nav#nav-wrap')
+  	var nav_wrap = $('nav#nav-wrap');
   	var nav = $("ul#nav");  
    
    /* if JS is enabled, remove the two a.mobile-btns 
