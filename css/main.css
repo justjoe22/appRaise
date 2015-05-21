@@ -15,3 +15,8 @@
 #main .footer {
 	color: yellow;	
 }
+#message p {
+	color: yellow;
+	font-size: 12px;
+	text-transform: uppercase;
+}

@@ -6,16 +6,14 @@
 
 (function($) {
 
-	/* Click Function */
-	$(window).click(function onClickfnc(i) {
-		$('#message').html("<p>Selected: " + i + "</p>");
-	});
-	
 	/*---------------------------------------------------- */
 	/* Preloader
 	------------------------------------------------------ */
 	$(window).load(function() {
 
+		/* Click Function */
+		$('#mySCR').html('function onClickfnc(i) {$("#message").html("<p>Selected: " + i + "</p>");}');
+		
 		var arrayBooks = ['Game of Thrones', 'Lord of the Rings', 'The Hobbit'];
 
 		for (i = 0; i < arrayBooks.length; i++) {
