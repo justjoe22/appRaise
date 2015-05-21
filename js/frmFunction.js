@@ -6,6 +6,11 @@
 
 (function($) {
 
+	/* Click Function */
+	$(window).click(function onClickfnc(i) {
+		$('#message').html("<p>Selected: " + i + "</p>");
+	});
+	
 	/*---------------------------------------------------- */
 	/* Preloader
 	------------------------------------------------------ */
@@ -15,14 +20,11 @@
 
 		for (i = 0; i < arrayBooks.length; i++) {
 			var liHtml = "<p>" + arrayBooks[i] + "</p>";
-			liHtml = liHtml + "<button  type='button' id='button'" + arrayBooks[i] + ">Action</button>";
+			liHtml = liHtml + "<button  type='button' id='button'" + arrayBooks[i] + " onclick='onClickfnc(" + '"' + arrayBooks[i] + '"' + ")'>Action</button>";
 
 			$('#Book').append(liHtml);
 
-			//$('#button' + arrayBooks[i]).on('click', window.location.href = 'http://www.google.com');
-			
-		}
-
+		} //End of Loop
 
 	});
 
