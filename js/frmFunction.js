@@ -15,7 +15,7 @@
 		$('#mySCR').html('function onClickfnc(i) {$("#message").html("<p>Selected: " + i + "</p>");}');
 		
 		/* Add Books to Array */
-		var arrayBooks = ['Game of Thrones', 'Lord of the Rings', 'The Hobbit'];
+		var arrayBooks = ['Game of Thrones', 'Lord of the Rings', 'The Hobbit', 'The Novel'];
 
 		/* Loop through each book, create a list item with an action button. */
 		for (i = 0; i < arrayBooks.length; i++) {
