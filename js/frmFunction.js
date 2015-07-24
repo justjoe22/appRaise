@@ -7,7 +7,7 @@
 (function($) {
 
 	var arrayBooks = [];
-	var db = new PouchDB('db_books');
+	var db = new PouchDB('db_books', {auto_compaction: true});
 
 	/*---------------------------------------------------- */
 	/* Preloader
@@ -27,22 +27,33 @@
 
 	});
 	
-	function removeLine(myVal) {
+	function removeLine(myVal,myID) {
 		
 		// arrayBooks = jQuery.grep(arrayBooks, function(value) {
 			// return value != arrayBooks[myVal];
 		// });
 		
-		db.get(myVal).then(function(doc) {
-		  return db.remove(doc);
-		}).then(function (result) {
-		  // handle result
-		  console.log(result);
+		$(myID).fadeOut();
+		
+		db.get(myVal).then(function (doc) {
+		  doc._deleted = true;
+		  return db.put(doc);
 		}).catch(function (err) {
 		  console.log(err);
 		});
 		
-		populateDiv();
+		var sec = 0;
+		var timer = window.setInterval(function(){
+			
+			sec = sec + 1;
+			
+			if(sec==1){
+				populateDiv();
+				
+				clearInterval(timer);
+			}
+				
+		}, 1000); //Loop every 1 second	
 	
 	}
 	
@@ -55,13 +66,15 @@
 		}).then(function (response) {
 		  // handle response
 		  console.log(response);
+		  
 		}).catch(function (err) {
 		  console.log(err);
 		});
 		
+		populateDiv();
 		//arrayBooks.push(myVal);
 		
-		populateDiv();
+		
 	
 	}
 	
@@ -87,9 +100,9 @@
 				
 				var myButton = document.getElementById('button' + i);
 				if (myButton.addEventListener) {
-					myButton.addEventListener('click', function(e){removeLine(e.target.value);}, false);
+					myButton.addEventListener('click', function(e){removeLine(e.target.value,'button' + i);}, false);
 				} else {
-					myButton.attachEvent('onclick', function(e){removeLine(e.target.value);});
+					myButton.attachEvent('onclick', function(e){removeLine(e.target.value,'button' + i);});
 				}
 
 			} //End of Loop
