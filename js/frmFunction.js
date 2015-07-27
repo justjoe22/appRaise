@@ -6,7 +6,7 @@
 
 (function($) {
 
-	var arrayBooks = [];
+	//var arrayBooks = [];
 	var db = new PouchDB('db_books', {auto_compaction: true});
 
 	/*---------------------------------------------------- */
