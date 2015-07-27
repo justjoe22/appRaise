@@ -107,7 +107,7 @@
 
 			} //End of Loop
 		
-			var liCode = "<p><input type='text' class='form-control' id='addTxt' placeholder='Add A Book' /><button type='button'  class='btn btn-lg btn-primary' id='addBtn'>Add</button></p>";
+			var liCode = "<div class='input-group input-group-lg'><span class='input-group-addon' id='sizing-addon1'>@</span><input type='text' class='form-control' id='addTxt' placeholder='Add A Book'  aria-describedby='sizing-addon1' /><button type='button'  class='btn btn-lg btn-primary' id='addBtn'>Add</button></div>";
 			
 			$('#Book').append(liCode);
 			
