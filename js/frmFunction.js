@@ -39,7 +39,7 @@
 				
 				// Define the HTML for each book.
 				var liHtml = "<p>" + result.rows[i].doc.title + "</p>";
-				liHtml = liHtml + "<button  type='button' id='button" + i + "' value='" + result.rows[i].doc._id + "'>Remove</button>";
+				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + result.rows[i].doc._id + "'>Remove</button>";
 
 				// Append HTML code to the host page.
 				$('#Book').append(liHtml);
@@ -50,7 +50,7 @@
 			} //End of Loop
 		
 			//Add HTML code to Add another book.
-			var liCode = "<p>Add a book: <input type='text' id='addTxt' /><button type='button' id='addBtn'>Add</button></p>";
+			var liCode = "<p>Add a book: <input type='text' id='addTxt' /><button type='button' class='btn btn-primary btn-lg active' id='addBtn'>Add</button></p>";
 			
 			//Append HTML code to the host page.
 			$('#Book').append(liCode);
