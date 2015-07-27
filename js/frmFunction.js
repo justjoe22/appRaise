@@ -93,7 +93,7 @@
 				
 				/* Define the HTML for each book. */
 				var liHtml = "<p>" + result.rows[i].doc.title + "</p>";
-				liHtml = liHtml + "<button  type='button' id='button" + i + "' value='" + result.rows[i].doc._id + "'>Remove</button>";
+				liHtml = liHtml + "<button  type='button' class='btn btn-lg btn-primary' id='button" + i + "' value='" + result.rows[i].doc._id + "'>Remove</button>";
 
 				/* Post HTML code to the host page. */
 				$('#Book').append(liHtml);
@@ -107,7 +107,7 @@
 
 			} //End of Loop
 		
-			var liCode = "<p>Add a book: <input type='text' id='addTxt' /><button type='button' id='addBtn'>Add</button></p>";
+			var liCode = "<p><input type='text' class='form-control' id='addTxt' placeholder='Add A Book' /><button type='button'  class='btn btn-lg btn-primary' id='addBtn'>Add</button></p>";
 			
 			$('#Book').append(liCode);
 			
