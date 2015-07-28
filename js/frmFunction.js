@@ -8,12 +8,14 @@
 	
 	//Define new PouchDB database for the entire process
 	var db = new PouchDB('db_books', {auto_compaction: true});
-	var remoteDB = new PouchDB('http://localhost:5984/db_books');
-
+	
 	/*---------------------------------------------------- */
 	/* Preloader
 	------------------------------------------------------ */
 	$(window).load(function() {
+		
+		//Initial Sync with Remote Server
+		PouchDB.sync(db, 'http://localhost:5984/db_books');
 		
 		//Populate the data into the main DIV
 		populateDiv();
@@ -111,11 +113,9 @@
 		});
 		
 		//Sync Database
-		db.sync(remoteDB).on('complete', function () {
-		  // yay, we're in sync!
-		}).on('error', function (err) {
-		  // boo, we hit an error!
-		});
+		db.replicate.to('http://localhost:5984/db_books');
+		
+		PouchDB.sync(db, 'http://localhost:5984/db_books');
 		
 		//Pause the function before refreshing the data in the main DIV
 		var sec = 0;
@@ -158,11 +158,9 @@
 		});
 
 		//Sync Database
-		db.sync(remoteDB).on('complete', function () {
-		  // yay, we're in sync!
-		}).on('error', function (err) {
-		  // boo, we hit an error!
-		});
+		db.replicate.to('http://localhost:5984/db_books');
+		
+		PouchDB.sync(db, 'http://localhost:5984/db_books');
 		
 		//Refresh data in the main DIV
 		populateDiv();
