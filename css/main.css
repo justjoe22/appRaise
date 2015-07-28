@@ -1,12 +1,7 @@
-@import url("fonts.css");
-@import url("font-awesome/css/font-awesome.min.css");
-@import url("simple-line-icons/simple-line-icons.css");
-
 #main {
 	color: blue;
 	background: black;
-	padding-top: 108px;
-	padding-bottom: 60px;
+	padding: 0 0 0 0;
 }
 #main .header {
 	font-weight: bold;

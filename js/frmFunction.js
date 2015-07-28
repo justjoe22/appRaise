@@ -8,6 +8,7 @@
 	
 	//Define new PouchDB database for the entire process
 	var db = new PouchDB('db_books', {auto_compaction: true});
+	var remoteDB = new PouchDB('http://localhost:5984/db_books');
 
 	/*---------------------------------------------------- */
 	/* Preloader
@@ -50,7 +51,7 @@
 			} //End of Loop
 		
 			//Add HTML code to Add another book.
-			var liCode = "<p>Add a book: <input type='text' id='addTxt' /><button type='button' class='btn btn-primary btn-lg active' id='addBtn'>Add</button></p>";
+			var liCode = "<p><input type='text' id='addTxt' placeholder='Add A Book' /><button type='button' class='btn btn-primary btn-lg active' id='addBtn'>Add</button></p>";
 			
 			//Append HTML code to the host page.
 			$('#Book').append(liCode);
@@ -109,6 +110,13 @@
 		  console.log(err);
 		});
 		
+		//Sync Database
+		db.sync(remoteDB).on('complete', function () {
+		  // yay, we're in sync!
+		}).on('error', function (err) {
+		  // boo, we hit an error!
+		});
+		
 		//Pause the function before refreshing the data in the main DIV
 		var sec = 0;
 		
@@ -147,6 +155,13 @@
 		  
 		}).catch(function (err) {
 		  console.log(err);
+		});
+
+		//Sync Database
+		db.sync(remoteDB).on('complete', function () {
+		  // yay, we're in sync!
+		}).on('error', function (err) {
+		  // boo, we hit an error!
 		});
 		
 		//Refresh data in the main DIV
