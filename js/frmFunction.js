@@ -7,7 +7,8 @@
 (function($) {
 	
 	//Define new PouchDB database for the entire process
-	var db = new PouchDB('db_books', {auto_compaction: true});
+	var localDB = new PouchDB('db_books')
+	//var remoteDB = new PouchDB('http://justjoe22.koding.io:8443/db_books');
 	
 	/*---------------------------------------------------- */
 	/* Preloader
@@ -15,8 +16,26 @@
 	$(window).load(function() {
 		
 		//Initial Sync with Remote Server
-		PouchDB.sync(db, 'http://localhost:5984/db_books');
+		// PouchDB.sync('db_books','http://justjoe22.koding.io:8443/db_books');
 		
+		//var $db = $.couch.db("http://justjoe22.koding.io:8443/db_books");
+       var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
+          live: true,
+          retry: true
+        }).on('change', function (info) {
+          console.out(info);
+        }).on('paused', function () {
+          // replication paused (e.g. user went offline)
+        }).on('active', function () {
+          // replicate resumed (e.g. user went back online)
+        }).on('denied', function (info) {
+          console.out(info);
+        }).on('complete', function (info) {
+          console.out(info);
+        }).on('error', function (err) {
+          console.out(err);
+        });
+        
 		//Populate the data into the main DIV
 		populateDiv();
 
@@ -32,10 +51,7 @@
 		$('#Book').html("");
 		
 		//Get data from the PouchDB
-		db.allDocs({
-		  include_docs: true, 
-		  attachments: true
-		}).then(function (result) {
+		localDB.allDocs({include_docs: true,attachments: true}).then(function (result) {
 		
 			// Loop through each book, create a list item with an action button.
 			for (i = 0; i < result.rows.length; i++) {
@@ -73,9 +89,7 @@
 				}
 			});
 	
-		}).catch(function (err) {
-		  console.log(err);
-		});
+		}).catch(function (err) {console.log(err);	});
 	
 	}
 	
@@ -105,17 +119,26 @@
 		$(myID).fadeOut();
 		
 		//Find and mark the current record for delete
-		db.get(myVal).then(function (doc) {
-		  doc._deleted = true;
-		  return db.put(doc);
-		}).catch(function (err) {
-		  console.log(err);
-		});
+		localDB.get(myVal).then(function (doc) { doc._deleted = true;  return localDB.put(doc);
+		}).catch(function (err) { console.log(err);	});
 		
 		//Sync Database
-		db.replicate.to('http://localhost:5984/db_books');
-		
-		PouchDB.sync(db, 'http://localhost:5984/db_books');
+       var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
+          live: true,
+          retry: true
+        }).on('change', function (info) {
+          console.out(info);
+        }).on('paused', function () {
+          // replication paused (e.g. user went offline)
+        }).on('active', function () {
+          // replicate resumed (e.g. user went back online)
+        }).on('denied', function (info) {
+          console.out(info);
+        }).on('complete', function (info) {
+          console.out(info);
+        }).on('error', function (err) {
+          console.out(err);
+        });
 		
 		//Pause the function before refreshing the data in the main DIV
 		var sec = 0;
@@ -147,20 +170,27 @@
 		var myVal = document.getElementById('addTxt').value;
 		
 		//Post the value to the PouchDB
-		db.post({
-		  title: myVal
-		}).then(function (response) {
-		  // handle response
-		  console.log(response);
-		  
-		}).catch(function (err) {
-		  console.log(err);
+		localDB.post({ title: myVal
+		}).then(function (response) { console.log(response); }).catch(function (err) {console.log(err);
 		});
 
 		//Sync Database
-		db.replicate.to('http://localhost:5984/db_books');
-		
-		PouchDB.sync(db, 'http://localhost:5984/db_books');
+       var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
+          live: true,
+          retry: true
+        }).on('change', function (info) {
+          console.out(info);
+        }).on('paused', function () {
+          // replication paused (e.g. user went offline)
+        }).on('active', function () {
+          // replicate resumed (e.g. user went back online)
+        }).on('denied', function (info) {
+          console.out(info);
+        }).on('complete', function (info) {
+          console.out(info);
+        }).on('error', function (err) {
+          console.out(err);
+        });
 		
 		//Refresh data in the main DIV
 		populateDiv();
