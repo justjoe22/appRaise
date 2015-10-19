@@ -19,6 +19,8 @@
 		// PouchDB.sync('db_books','http://justjoe22.koding.io:8443/db_books');
 		
 		//var $db = $.couch.db("http://justjoe22.koding.io:8443/db_books");
+		
+		//Initial post
        var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
           live: true,
           retry: true
@@ -36,7 +38,6 @@
           console.out(err);
         });
         
-		//Populate the data into the main DIV
 		populateDiv();
 
 	});
@@ -55,10 +56,14 @@
 		
 			// Loop through each book, create a list item with an action button.
 			for (i = 0; i < result.rows.length; i++) {
-				
+
 				// Define the HTML for each book.
-				var liHtml = "<p>" + result.rows[i].doc.title + "</p>";
-				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + result.rows[i].doc._id + "'>Remove</button>";
+				var liHtml = "<p>";
+				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='buttonE" + i + "' value='" + result.rows[i].doc._id + "'><i class='fa fa-pencil'></i></button> ";
+				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + result.rows[i].doc._id + "'><i class='fa fa-trash-o'></i></button> ";
+				liHtml = liHtml + result.rows[i].doc.title;
+				liHtml = liHtml + " " + result.rows[i].doc.favorite;
+				liHtml = liHtml + "</p>";
 
 				// Append HTML code to the host page.
 				$('#Book').append(liHtml);
@@ -67,27 +72,28 @@
 				BookButton(i);
 
 			} //End of Loop
-		
-			//Add HTML code to Add another book.
-			var liCode = "<p><input type='text' id='addTxt' placeholder='Add A Book' /><button type='button' class='btn btn-primary btn-lg active' id='addBtn'>Add</button></p>";
 			
-			//Append HTML code to the host page.
-			$('#Book').append(liCode);
-			
-			//Add event OnClick to the addBtn control
-			var myButton2 = document.getElementById('addBtn');
-			if (myButton2.addEventListener) {
-				myButton2.addEventListener('click', function(e){addLine();}, false);
-			} else {
-				myButton2.attachEvent('onclick', function(e){addLine();});
-			}
-			
-			//Add event OnEnter to the addTxt control
-			$("#addTxt").keypress(function(e) {
-				if(e.which == 13) {				
-					addLine();
-				}
-			});
+            //Add HTML code to Add another book.
+            var liCode = "<p><input type='text' id='addTxt' placeholder='Add A Book' /><input type='checkbox' id='addFav' />Favorite <button type='button' class='btn btn-primary btn-lg active' id='addBtn'>Add</button></p>";
+            
+            //Append HTML code to the host page.
+            $('#Book').append(liCode);
+            
+            //Add event OnClick to the addBtn control
+            var myButton2 = document.getElementById('addBtn');
+            if (myButton2.addEventListener) {
+                myButton2.addEventListener('click', function(e){addLine();}, false);
+            } else {
+                myButton2.attachEvent('onclick', function(e){addLine();});
+            }
+            
+            //Add event OnEnter to the addTxt control
+            $("#addTxt").keypress(function(e) {
+            if(e.which == 13) {
+                addLine();
+            }
+            
+            });
 	
 		}).catch(function (err) {console.log(err);	});
 	
@@ -168,9 +174,10 @@
 		
 		//Get value from the addTxt control
 		var myVal = document.getElementById('addTxt').value;
+		var favVal = document.getElementById('addFav').checked;
 		
 		//Post the value to the PouchDB
-		localDB.post({ title: myVal
+		localDB.post({ title: myVal, favorite: favVal
 		}).then(function (response) { console.log(response); }).catch(function (err) {console.log(err);
 		});
 
