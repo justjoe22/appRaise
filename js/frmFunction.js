@@ -57,13 +57,16 @@
 			// Loop through each book, create a list item with an action button.
 			for (i = 0; i < result.rows.length; i++) {
 
+			    //Variable
+			    var docID = result.rows[i].doc._id;
+			    
 				// Define the HTML for each book.
-				var liHtml = "<p>";
-				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='buttonE" + i + "' value='" + result.rows[i].doc._id + "'><i class='fa fa-pencil'></i></button> ";
-				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + result.rows[i].doc._id + "'><i class='fa fa-trash-o'></i></button> ";
+				var liHtml = "<div id='view" + i + "'>";
+				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='buttonE" + i + "' value='" + docID + "'><i class='fa fa-pencil'></i></button> ";
+				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + docID + "'><i class='fa fa-trash-o'></i></button> ";
 				liHtml = liHtml + result.rows[i].doc.title;
 				liHtml = liHtml + " " + result.rows[i].doc.favorite;
-				liHtml = liHtml + "</p>";
+				liHtml = liHtml + "</div>";
 
 				// Append HTML code to the host page.
 				$('#Book').append(liHtml);
@@ -106,12 +109,20 @@
 	function BookButton(i){
 		//Assign a variable to the button control
 		var myButton = document.getElementById('button' + i);
+		var myButtonE = document.getElementById('buttonE' + i);
 		
 		//Add event OnClick to the button control
 		if (myButton.addEventListener) {
 			myButton.addEventListener('click', function(e){removeLine(e.target.value,'button' + i);}, false);
 		} else {
 			myButton.attachEvent('onclick', function(e){removeLine(e.target.value,'button' + i);});
+		}
+		
+		//Edit Button
+		if (myButtonE.addEventListener) {
+			myButtonE.addEventListener('click', function(e){editLine(e.target.value,'buttonE' + i);}, false);
+		} else {
+			myButtonE.attachEvent('onclick', function(e){editLine(e.target.value,'buttonE' + i);});
 		}
 	}
 	
@@ -201,6 +212,57 @@
 		
 		//Refresh data in the main DIV
 		populateDiv();
+	
+	}
+	
+	/*---------------------------------------------------- */
+	/* Add a new record to the PouchDB
+	/* Params: N/A
+	------------------------------------------------------ */
+	function editLine(myVal,myID) {
+		
+		//Get value from the addTxt control
+		var liHtml = "UPDATE:" + myVal + ":" + myID;
+		
+		//Post the value to the PouchDB
+		localDB.get(myVal).then(function (doc) { doc.title=liHtml;  return localDB.put(doc);
+		}).catch(function (err) { console.log(err);	});
+		
+		//Sync Database
+       var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
+          live: true,
+          retry: true
+        }).on('change', function (info) {
+          console.out(info);
+        }).on('paused', function () {
+          // replication paused (e.g. user went offline)
+        }).on('active', function () {
+          // replicate resumed (e.g. user went back online)
+        }).on('denied', function (info) {
+          console.out(info);
+        }).on('complete', function (info) {
+          console.out(info);
+        }).on('error', function (err) {
+          console.out(err);
+        });
+		
+		//Pause the function before refreshing the data in the main DIV
+		var sec = 0;
+		
+		//Start Timer
+		var timer = window.setInterval(function(){
+			
+			sec = sec + 1;
+			
+			if(sec==1){
+				//Refresh data in the main DIV
+				populateDiv();
+				
+				//Stop Timer
+				clearInterval(timer);
+			}
+				
+		}, 1000); //Loop every 1 second	
 	
 	}
 
