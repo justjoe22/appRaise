@@ -216,7 +216,7 @@
 	}
 	
 	/*---------------------------------------------------- */
-	/* Add a new record to the PouchDB
+	/* Edit a record to the PouchDB
 	/* Params: N/A
 	------------------------------------------------------ */
 	function editLine(myVal,myID) {
