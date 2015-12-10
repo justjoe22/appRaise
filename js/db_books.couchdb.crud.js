@@ -56,17 +56,26 @@
 		
 			// Loop through each book, create a list item with an action button.
 			for (i = 0; i < result.rows.length; i++) {
-
-			    //Variable
-			    var docID = result.rows[i].doc._id;
-			    
+                //Variable
+                var docID = result.rows[i].doc._id;
+	
 				// Define the HTML for each book.
 				var liHtml = "<div id='view" + i + "'>";
-				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='buttonE" + i + "' value='" + docID + "'><i class='fa fa-pencil'></i></button> ";
-				liHtml = liHtml + "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + docID + "'><i class='fa fa-trash-o'></i></button> ";
-				liHtml = liHtml + result.rows[i].doc.title;
-				liHtml = liHtml + " " + result.rows[i].doc.favorite;
-				liHtml = liHtml + "</div>";
+				liHtml += "<button  type='button' class='btn btn-primary btn-lg active' id='buttonE" + i + "' value='" + docID + "'><i class='fa fa-pencil'></i></button> ";
+				liHtml += "<button  type='button' class='btn btn-primary btn-lg active' id='button" + i + "' value='" + docID + "'><i class='fa fa-trash-o'></i></button> ";
+				liHtml += result.rows[i].doc.title;
+				liHtml += " " + result.rows[i].doc.favorite;
+				liHtml += "</div>";
+				//liHtml += "<div id='edit" + i + "' style='display:none;'>";
+				//liHtml += "<button  type='button' class='btn btn-primary btn-lg active' id='btnsave" + i + "' value='" + docID + "'><i class='fa fa-pencil'></i></button> ";
+				//liHtml += "<button  type='button' class='btn btn-primary btn-lg active' id='btncancel" + i + "' value='" + docID + "'><i class='fa fa-trash-o'></i></button> ";
+				//liHtml += "<input type='text' id='addTxt' value='" + result.rows[i].doc.title + "' placeholder='Add A Book' />";
+				//liHtml += "<input type='checkbox' id='addFav' "
+				//if(result.rows[i].doc.favorite===true){
+                //    liHtml += "checked";
+				//}
+				//liHtml += " />Favorite";
+				//liHtml += "</div>";
 
 				// Append HTML code to the host page.
 				$('#Book').append(liHtml);
