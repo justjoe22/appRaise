@@ -6,22 +6,13 @@
 
 (function($) {
 	
-	//Define new PouchDB database for the entire process
-	var localDB = new PouchDB('db_books')
-	//var remoteDB = new PouchDB('http://justjoe22.koding.io:8443/db_books');
-	
 	/*---------------------------------------------------- */
 	/* Preloader
 	------------------------------------------------------ */
-	$(window).load(function() {
+	function startSync(db_name, db_server) {
 		
 		//Initial Sync with Remote Server
-		// PouchDB.sync('db_books','http://justjoe22.koding.io:8443/db_books');
-		
-		//var $db = $.couch.db("http://justjoe22.koding.io:8443/db_books");
-		
-		//Initial post
-       var sync = PouchDB.sync('db_books', 'http://justjoe22.koding.io:8443/db_books', {
+       var sync = PouchDB.sync(db_name, db_server + '/' + db_name, {
           live: true,
           retry: true
         }).on('change', function (info) {
@@ -38,9 +29,7 @@
           console.out(err);
         });
         
-		populateDiv();
-
-	});
+	}
 	
 	/*---------------------------------------------------- */
 	/* Populate the data from PouchDB to the main DIV
